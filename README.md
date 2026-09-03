@@ -32,6 +32,16 @@
 
 ---
 
+## ⚠️ KernelSU 兼容性(重要)
+
+本内核内置的 **KernelSU 驱动版本为 32334**,配套的 **KernelSU Manager 请使用 v3.1.0**
+([下载](https://github.com/tiann/KernelSU/releases),已验证可用)。
+
+> 更高版本的 Manager(如 v3.2.0+ / v3.3.0)会提示「内核版本过低 / uapi 不匹配」而无法使用,
+> 请勿升级 Manager,直到内核中的 KernelSU 驱动同步更新。
+
+---
+
 ## 刷入方法
 
 **准备**:手机解锁 Bootloader,进入 fastboot 模式(关机后长按「电源 + 音量下」),
@@ -65,9 +75,7 @@ fastboot flash boot 原版boot.img
 
 2. **配置 KernelSU 获取 root**
 
-   - 安装 [KernelSU Manager](https://github.com/tiann/KernelSU/releases)。
-   - 注意:本内核内置的 KernelSU 驱动版本为 **32334**,请使用与其匹配的 Manager 版本
-     (v3.1.0 已验证可用;更高版本可能提示内核版本过低)。
+   - 安装 [KernelSU Manager](https://github.com/tiann/KernelSU/releases)(兼容版本见上文「KernelSU 兼容性」)。
    - 打开 Manager 完成初始化后:
 
    ```bash
