@@ -162,7 +162,7 @@ make -j16 O=out CC=$TC CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-lin
 - ROM: [Project Infinity X (Android 16 / 4.19)](https://xdaforums.com/t/rom-unofficial-project-infinity-x-android-16-4-19-mi-8-lite-platina.4761644/)
 - Droidspace: [ravindu644/Droidspaces-OSS](https://github.com/ravindu644/Droidspaces-OSS)
 - KernelSU: [tiann/KernelSU](https://github.com/tiann/KernelSU)
-- 本内核构建与排障由 **DeepSeek AI** 协助完成
+- 本内核排障由 **DeepSeek** 协助完成
 
 ---
 
