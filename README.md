@@ -4,8 +4,7 @@
 
 - **Droidspace 容器支持**(完整内核配置)
 - **UFW / Fail2ban 防火墙支持**(内核模块全部内置)
-- **KernelSU**(内核级 root)
-
+- **内置KernelSU（版本为 32334）**
 ---
 
 ## 适用设备与 ROM
