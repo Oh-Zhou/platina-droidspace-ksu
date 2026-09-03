@@ -2,12 +2,17 @@
 
 **Xiaomi Mi 8 Lite (platina) · Droidspace + UFW/Fail2ban + KernelSU 内核 boot 镜像**
 
-基于 [sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660) 分支
-**`lineage-23.2-ksu`**(Linux 4.19.325-cip133-st17),为 ROM **Project Infinity X
-(Android 16)** 编译。已实测:正常开机、运行稳定、内核配置校验全绿。
+- 设备 ROM:**Project Infinity X (Android 16, 4.19)** — [XDA 原帖](https://xdaforums.com/t/rom-unofficial-project-infinity-x-android-16-4-19-mi-8-lite-platina.4761644/)
+- 原始内核: **[sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660)** 分支 `lineage-23.2-ksu`
+  (Linux 4.19.325-cip133-st17),**源自 sabarop 的内核,由 DeepSeek 协助构建**
+- 已实测:正常开机、运行稳定、内核配置校验全绿。
 
 > ⚠️ 刷机有风险,建议先 `fastboot boot` 临时测试。本镜像用 ROM **原版干净 ramdisk**
 > (无 Magisk 补丁),root 由 **KernelSU(内核内置)** 提供。
+
+> 📦 本仓库**不含完整内核源码树**(源码在 sabarop 仓库,体量过大);
+> 上传的是**可复现全部改动的源**:`kernel-package/` 内的补丁 + 配置片段 + 脚本,
+> 在 sabarop 树上执行 `kernel-package/apply-droidspace.sh` 即可一键重放。
 
 ## 文件说明
 
@@ -85,6 +90,10 @@ Project Infinity X 上正常开机运行"的实测问题,详见各文件注释:
 
 ## 致谢
 
-- [sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660)
-- [ravindu644/Droidspaces-OSS](https://github.com/ravindu644/Droidspaces-OSS)
-- [tiann/KernelSU](https://github.com/tiann/KernelSU)
+- 设备 ROM: **Project Infinity X (Android 16)** — [XDA: Unofficial Project Infinity X Android 16/4.19 Mi 8 Lite (platina)](https://xdaforums.com/t/rom-unofficial-project-infinity-x-android-16-4-19-mi-8-lite-platina.4761644/)
+- 原始内核: **[sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660)** (`lineage-23.2-ksu` 分支)
+- Droidspace: [ravindu644/Droidspaces-OSS](https://github.com/ravindu644/Droidspaces-OSS)
+- KernelSU: [tiann/KernelSU](https://github.com/tiann/KernelSU)
+
+> 本内核源自 sabarop 的 lineage-23.2-ksu 内核;Droidspace/防火墙配置、编译修正、
+> 刷机与排障(openssl3 / RD_LZ4 / PSI-lmkd / Magisk 冲突等)由 **DeepSeek AI 协助完成**。
