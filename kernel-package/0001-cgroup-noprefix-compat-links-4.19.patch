@@ -1,0 +1,32 @@
+From 50cb2ccbef7d84852f2600bb4d3e69f6bd736561 Mon Sep 17 00:00:00 2001
+From: ravindu644 <droidcasts@protonmail.com>
+Date: Sun, 22 Feb 2026 22:27:15 +0530
+Subject: [PATCH] Droidspaces/LXC: restore cgroup file prefix handling
+ (re-rolled for kernel_xiaomi_sdm660 lineage-23.2-ksu, Linux 4.19.325)
+
+当 cgroup v1 以 noprefix 挂载时, 文件不带子系统前缀
+(例如只有 "usage" 而非 "cpuacct.usage")。LXC/Droidspaces 期待经典
+带前缀文件名, 此改动在 NOPREFIX 根上额外创建带前缀的符号链接以兼容。
+
+Signed-off-by: ravindu644 <droidcasts@protonmail.com>
+---
+ kernel/cgroup/cgroup.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 694b1cc8d..d0d04bff1 100755
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3949,7 +3949,14 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
+ 		spin_lock_irq(&cgroup_file_kn_lock);
+ 		cfile->kn = kn;
+ 		spin_unlock_irq(&cgroup_file_kn_lock);
+ 	}
+ 
++	if (cft->ss && (cgrp->root->flags & CGRP_ROOT_NOPREFIX) && !(cft->flags & CFTYPE_NO_PREFIX)) {
++				snprintf(name, CGROUP_FILE_NAME_MAX, "%s.%s", cft->ss->name, cft->name);
++				kernfs_create_link(cgrp->kn, name, kn);
++	}
++
+ 	return 0;
+ }
