@@ -94,6 +94,15 @@ fastboot flash boot 原版boot.img
 
 ---
 
+## 更新记录
+
+- **v1.0.1(推荐)** — 修复锁屏/灭屏后屏幕残留微弱亮光的问题
+  (启用内核 WLED 背光驱动 `CONFIG_BACKLIGHT_QCOM_SPMI_WLED`,
+  对应 ROM 内核中的 `CONFIG_LEDS_QPNP_WLED`),并同步更新了构建配置 `buildfix.config`。
+- **v1.0.0** — 初版:完整 Droidspace + UFW/Fail2ban + KernelSU 支持。
+
+---
+
 ## 开发者:重新编译
 
 `kernel-package/` 内含编译所需的全部补丁、配置片段与脚本,在 sabarop 内核树上即可复现。
