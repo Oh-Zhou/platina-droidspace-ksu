@@ -93,12 +93,8 @@ fastboot flash boot 原版boot.img
 
 ## 注意事项
 
-- **本 ROM 原厂不集成 Magisk**(已对原版 `product` 镜像与 `boot` ramdisk 逐字节核验,
-  无任何 Magisk 痕迹)。若设备上残留此前自行安装的 Magisk(典型位置:
-  `/product/bin/magisk*` 与 `su` 链接、Magisk App、`/data/adb/magisk`),
-  KernelSU 会检测到冲突并自动禁用自身。处理方式:
-  - 本镜像已采用 ROM **原版(未打补丁)ramdisk**,开机不再拉起 Magisk 守护进程;
-  - 卸载 Magisk App(`adb uninstall com.topjohnwu.magisk`),并按需清理上述残留后重启。
+- **刷入本 boot 镜像前,请先卸载/清理设备上的 Magisk**(Magisk App、`/product/bin/magisk*`、
+  `su` 链接、`/data/adb/magisk`),否则会与内核内置的 KernelSU 冲突。
 - 刷机有风险,请自行备份数据;建议先 `fastboot boot` 临时验证再永久刷入。
 
 ---
