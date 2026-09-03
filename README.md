@@ -57,18 +57,50 @@ adb shell su -c id            # 期望 uid=0(root)
 
 **回退**:刷回你 ROM 的原版 boot.img(`fastboot flash boot <原版boot.img>`)即可。
 
-## 重新编译(可选)
+## 重新编译(可选,构建所需文件都在本仓库)
+
+`kernel-package/` 已包含构建所需全部文件(在 sabarop 内核树上使用):
+
+| 文件 | 用途 |
+|---|---|
+| `droidspace.config` | Droidspace + UFW/Fail2ban 配置片段 |
+| `buildfix.config` | 树编译/开机必需修正(RD_LZ4、PSI、MODULES、BUG、VENDOR_HOOKS、KSU…) |
+| `rom-base.config` | **ROM 实机 .config**(自设备 `/proc/config.gz`,含 `-perf` localversion),作基座可 1:1 复现 |
+| `0001-cgroup-noprefix-compat-links-4.19.patch` | 官方 cgroup noprefix 补丁(4.19 行号重制) |
+| `0002-extract-cert-openssl3-compat.patch` | host openssl≥3.5 兼容 |
+| `0003-mmap-lock-writeonce-buildfix.patch` | mmap_lock/WRITE_ONCE 源码修正 |
+| `apply-droidspace.sh` | 一键:打补丁+装片段+合并配置+校验 |
+| `build-droidspace-kernel.sh` / `check-droidspace-config.sh` | 编译与配置校验 |
+
+**基线与工具链(验证用):**
+
+- 内核基线: `sabarop/kernel_xiaomi_sdm660` 分支 `lineage-23.2-ksu`
+  基线 commit `6ad212dfc`(在其上应用本仓库改动后编译)
+- 编译器: AOSP 预编译 clang-r416183b (clang 12.0.5)
+  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android12-release/clang-r416183b.tar.gz
+- GNU aarch64 binutils(汇编/链接),主机 Fedora 44 实测
+
+**步骤:**
 
 ```bash
-# 0) 准备: ~/kernel_xiaomi_sdm660 (sabarop lineage-23.2-ksu) + AOSP clang-r416183b
-# 1) 应用补丁+片段+合并(基座 vendor/sdm660_defconfig 或 ROM .config):
-bash kernel-package/apply-droidspace.sh ~/kernel_xiaomi_sdm660 <本目录>
+# 0) 克隆 sabarop 树并检出基线
+git clone -b lineage-23.2-ksu https://github.com/sabarop/kernel_xiaomi_sdm660 ~/kernel_xiaomi_sdm660
+# (建议 git checkout 6ad212dfc 保持与验证基线一致)
+
+# 1) 应用补丁+片段+合并配置(默认基座 vendor/sdm660_defconfig;
+#    想 1:1 复现本镜像则先 cp kernel-package/rom-base.config 为基座再 merge)
+bash kernel-package/apply-droidspace.sh ~/kernel_xiaomi_sdm660 <本仓库目录>
+
 # 2) 编译(clang 必须写命令行):
 cd ~/kernel_xiaomi_sdm660 && export ARCH=arm64
 TC=~/toolchains/clang-r416183b/bin/clang
 make -j16 O=out CC=$TC CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu-
 # 产物: out/arch/arm64/boot/Image.gz-dtb
 ```
+
+> 想 1:1 复现本镜像(含 `-perf` 版本串与 ROM 模块兼容),请用 `rom-base.config`
+> 作 merge 第一项 + `droidspace.config` + `buildfix.config`,并设
+> `CONFIG_LOCALVERSION="-perf"`(已含在 rom-base.config)。
 
 ## 为什么会有这些"修正"(踩坑记录)
 
