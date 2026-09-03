@@ -1,0 +1,38 @@
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 39f8bf124..c690a9a00 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -78,7 +78,7 @@ struct mm_struct efi_mm = {
+ 	.mm_rb			= RB_ROOT,
+ 	.mm_users		= ATOMIC_INIT(2),
+ 	.mm_count		= ATOMIC_INIT(1),
+-	.mmap_sem		= __RWSEM_INITIALIZER(efi_mm.mmap_sem),
++	.mmap_lock		= __RWSEM_INITIALIZER(efi_mm.mmap_lock),
+ 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
+ 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
+ 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 41e9b74ef..09abf0cd2 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -275,10 +275,17 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ 	__x;								\
+ })
+ 
++/*
++ * 本树原始 WRITE_ONCE 为 do-while 语句版(CAF 变更), 但 lib/fault-inject.c
++ * 等按上游 4.19 把它当表达式用 (if (!WRITE_ONCE(...))) -> 恢复为上游 v4.19
++ * 语义的语句表达式版(返回写入值, 单次求值 val), 见 HANDOFF 交接记录。
++ */
+ #define WRITE_ONCE(x, val)				\
+-do {							\
+-	*(volatile typeof(x) *)&(x) = (val);		\
+-} while (0)
++({							\
++	typeof(x) __val = (val);			\
++	*(volatile typeof(x) *)&(x) = __val;		\
++	__val;						\
++})
+ 
+ #ifdef CONFIG_KASAN
+ /*

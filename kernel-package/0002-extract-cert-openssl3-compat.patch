@@ -1,0 +1,31 @@
+diff --git a/scripts/extract-cert.c b/scripts/extract-cert.c
+index 68f73787d..cd18358bf 100644
+--- a/scripts/extract-cert.c
++++ b/scripts/extract-cert.c
+@@ -21,6 +21,18 @@
+ #include <openssl/bio.h>
+ #include <openssl/pem.h>
+ #include <openssl/err.h>
++#include <openssl/opensslv.h>
++
++/*
++ * OpenSSL >= 3.0 removed the legacy ENGINE API, and <openssl/engine.h>
++ * no longer exists since OpenSSL 3.5 (e.g. Fedora 44).  Kernel builds
++ * never pass a "pkcs11:" source (CONFIG_SYSTEM_TRUSTED_KEYS is a PEM
++ * path or empty), so on OpenSSL 3.x compile the ENGINE path out by
++ * reusing the existing BoringSSL fallback in main() below.
++ */
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L
++#define OPENSSL_IS_BORINGSSL
++#else
+ #include <openssl/engine.h>
+ 
+ /*
+@@ -29,6 +41,7 @@
+  * Remove this if/when that API is no longer used
+  */
+ #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++#endif
+ 
+ #define PKEY_ID_PKCS7 2
+ 
