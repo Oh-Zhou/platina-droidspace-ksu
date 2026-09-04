@@ -110,7 +110,13 @@ fastboot flash boot 原版boot.img
 
 ## 开发者:重新编译
 
-`kernel-package/` 内含编译所需的全部补丁、配置片段与脚本,在 sabarop 内核树上即可复现。
+`kernel-package/` 包含编译所需的全部补丁、配置片段与脚本,在 sabarop 内核树上即可复现。
+
+> **关于可刷 boot.img**:仓库附带的 `platina-droidspace-ksu-boot.img` 可直接刷入。
+> 若要自己重打 boot.img,需要该 ROM 的**原版 boot.img**(其 ramdisk 作为引导壳),
+> 可从 [Project Infinity X 原包](https://xdaforums.com/t/rom-unofficial-project-infinity-x-android-16-4-19-mi-8-lite-platina.4761644/) 得到;
+> 然后运行 `kernel-package/make-boot-img.sh <原版boot.img> <Image.gz-dtb> [输出]`。
+> ramdisk 的作用与为何用原版,见 README「常见问题」。
 
 ### 依赖
 
