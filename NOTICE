@@ -1,0 +1,15 @@
+# NOTICE
+
+本项目为聚合仓库,各组成部分遵循各自的许可证:
+
+| 组成部分 | 许可证 | 来源 |
+|---|---|---|
+| 内核源码、内核补丁、`Image.gz-dtb`/`boot.img` 中的内核 | **GPL-2.0** | 上游 Linux 4.19 与 [sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660)(`lineage-23.2-ksu`) |
+| `droidspace.config`、构建/校验脚本、本仓库自有的配置与打包内容 | **GPL-3.0** | 部分依据 [ravindu644/Droidspaces-OSS](https://github.com/ravindu644/Droidspaces-OSS)(GPL-3.0) 的文档与配置整理 |
+| KernelSU(内核内置组件) | 按 [tiann/KernelSU](https://github.com/tiann/KernelSU) 项目自身许可 | KernelSU |
+
+- `LICENSE` — 本仓库自有内容(Droidspaces 相关配置/脚本/打包)采用 **GPL-3.0**。
+- `LICENSE-GPL-2.0` — 内核及内核补丁部分遵循 **GPL-2.0**(与上游 Linux/sabarop 一致)。
+- README 中引用的第三方仓库与文档版权归其各自作者/项目所有。
+
+如对本仓库的许可证划分或归属有疑问,请联系维护者。

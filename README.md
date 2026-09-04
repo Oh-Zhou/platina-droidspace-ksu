@@ -161,6 +161,18 @@ make -j16 O=out CC=$TC CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-lin
 
 ---
 
+## 许可证(License)
+
+本项目为聚合仓库,各组成部分遵循各自许可证:
+
+- **内核与内核补丁**:GPL-2.0(与上游 Linux / [sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660) 一致,见 `LICENSE-GPL-2.0`);
+- **本仓库自有内容**(Droidspace 配置、构建/校验脚本、打包):GPL-3.0(见 `LICENSE`);
+- KernelSU 按 [tiann/KernelSU](https://github.com/tiann/KernelSU) 自身许可,详见 `NOTICE`。
+
+第三方仓库与文档版权归其各自作者所有。
+
+---
+
 ## 致谢与来源
 
 - 内核: [sabarop/kernel_xiaomi_sdm660](https://github.com/sabarop/kernel_xiaomi_sdm660)(`lineage-23.2-ksu`)
