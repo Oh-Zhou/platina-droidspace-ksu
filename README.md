@@ -99,6 +99,27 @@ fastboot flash boot 原版boot.img
 
 ---
 
+## 已知问题(Droidspace 容器侧,与内核无关)
+
+以下为本项目实测过程中遇到的 **Droidspace 容器功能限制**,属上游平台问题,
+与本内核改动无关(用原版内核同样存在)。
+
+1. **完整硬件访问(`enable_hw_access=1`)会导致整机卡死循环**
+   症状:拔 USB / 插充电器 / 使用容器期间,手机偶发黑屏、电源键无响应、
+   界面闪一下又黑(doze 循环),甚至 USB 失联直到重启。
+   **规避:容器设置改为 `enable_hw_access=0` + 仅开启「GPU 访问(隔离 /dev 镜像)」**,
+   该组合实测稳定,桌面(纯软件渲染)正常。
+2. **VirGL 3D 硬件加速不可用**
+   原因:本机 4.19 CAF 内核无 `/dev/dri` render 节点(GPU 走 kgsl),
+   宿主亦无 virgl_test_server;`enable_virgl=1` 会使桌面会话崩溃
+   (virpipe 无渲染设备)。**规避:保持 `enable_virgl=0`**,容器内为纯软件渲染(llvmpipe)。
+
+> 已就上述两点向 Droidspaces 上游反馈:
+> [issue #301(hw_access)](https://github.com/ravindu644/Droidspaces-OSS/issues/301) /
+> [issue #302(VirGL)](https://github.com/ravindu644/Droidspaces-OSS/issues/302)。
+
+---
+
 ## 更新记录
 
 - **v1.0.1(推荐)** — 修复锁屏/灭屏后屏幕残留微弱亮光的问题
