@@ -113,7 +113,10 @@ fastboot flash boot 原版boot.img
    原因:本机 4.19 CAF 内核无 `/dev/dri` render 节点,
    宿主亦无 virgl_test_server;`enable_virgl=1` 会使桌面会话崩溃
    (virpipe 无渲染设备)。**规避:保持 `enable_virgl=0`**,容器内为纯软件渲染(llvmpipe)。
-   
+
+> 注:以上两条属本设备(平台/内核/容器)特有现象,已在设备侧用上述规避方案解决,
+> 与内核及上游无关。
+
 ---
 
 ## 更新记录
